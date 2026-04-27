@@ -1,0 +1,2 @@
+GEO_accession,Platform,Species,Tissue_or_cell_type,Data_type,Case_group,Control_group,Case_n,Control_n,Raw_data_available,Matrix_available,Included,Reason
+GSEXXXX,GPLXXXX,Homo sapiens,skeletal muscle,microarray,Disease,Control,0,0,Unknown,Unknown,Pending,
