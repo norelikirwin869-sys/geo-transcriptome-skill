@@ -56,7 +56,7 @@ geo-transcriptome-skill/
 
 ## Example research topic
 
-> Integrated bioinformatics and machine-learning analysis identifies immune- and mitochondria-related biomarkers in diabetic sarcopenia based on GEO transcriptome datasets.
+> Integrated bioinformatics and machine-learning analysis identifies immune- and mitochondrial-related biomarkers in diabetic sarcopenia based on GEO transcriptome datasets.
 
 ## Disclaimer
 

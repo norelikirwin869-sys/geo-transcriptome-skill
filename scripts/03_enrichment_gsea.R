@@ -1,5 +1,5 @@
 # 03_enrichment_gsea.R
-# GO, KEGG and GSEA template
+# GO, KEGG and Hallmark GSEA template
 
 suppressPackageStartupMessages({
   library(clusterProfiler)
@@ -25,7 +25,7 @@ if (!"SYMBOL" %in% colnames(deg)) {
 fc_col <- if ("logFC" %in% colnames(deg)) "logFC" else "log2FoldChange"
 p_col <- if ("adj.P.Val" %in% colnames(deg)) "adj.P.Val" else "padj"
 
-sig <- subset(deg, !is.na(.data[[p_col]]) & .data[[p_col]] < 0.05 & abs(.data[[fc_col]]) > 0.5)
+sig <- deg[!is.na(deg[[p_col]]) & deg[[p_col]] < 0.05 & abs(deg[[fc_col]]) > 0.5, , drop = FALSE]
 
 # -----------------------------
 # ID conversion
