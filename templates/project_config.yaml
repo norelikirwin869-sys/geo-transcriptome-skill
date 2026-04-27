@@ -1,0 +1,55 @@
+project:
+  title: "Integrated GEO transcriptome analysis of disease"
+  disease: "diabetic sarcopenia"
+  species: "Homo sapiens"
+  tissue: "skeletal muscle"
+  data_source: "GEO"
+
+analysis:
+  data_type: "microarray_or_rnaseq"
+  differential_expression:
+    adjusted_p_value: 0.05
+    absolute_log2fc: 0.5
+  enrichment:
+    databases:
+      - GO_BP
+      - GO_CC
+      - GO_MF
+      - KEGG
+      - Reactome
+      - Hallmark
+  wgcna:
+    enabled: true
+    min_module_size: 30
+    merge_cut_height: 0.25
+  machine_learning:
+    methods:
+      - LASSO
+      - RandomForest
+      - SVM_RFE
+    validation: ROC
+  immune_infiltration:
+    methods:
+      - ssGSEA
+      - xCell
+      - MCP_counter
+
+outputs:
+  figures:
+    - PCA
+    - volcano_plot
+    - heatmap
+    - GO_dotplot
+    - KEGG_dotplot
+    - GSEA_plot
+    - WGCNA_module_trait_heatmap
+    - PPI_network
+    - ROC_curve
+    - immune_infiltration_heatmap
+  tables:
+    - dataset_screening_table
+    - DEG_table
+    - enrichment_table
+    - hub_gene_table
+    - biomarker_table
+    - validation_table
