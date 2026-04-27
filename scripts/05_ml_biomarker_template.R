@@ -21,8 +21,19 @@ rownames(meta) <- meta$sample_id
 candidates <- scan(candidate_file, what = character(), quiet = TRUE)
 
 common_genes <- intersect(rownames(expr), candidates)
+if (length(common_genes) < 2) {
+  stop("Need at least 2 candidate genes present in expression matrix for ML modeling.")
+}
+
 x <- t(expr[common_genes, rownames(meta), drop = FALSE])
 y <- factor(meta$group, levels = c("Control", "Disease"))
+
+n_features <- ncol(x)
+svm_sizes <- unique(sort(pmin(c(5, 10, 20, 30), n_features)))
+svm_sizes <- svm_sizes[svm_sizes >= 2]
+if (length(svm_sizes) == 0) {
+  svm_sizes <- n_features
+}
 
 set.seed(123)
 
@@ -45,6 +56,23 @@ rf_imp <- data.frame(gene = rownames(rf_imp), rf_imp, check.names = FALSE)
 rf_imp <- rf_imp[order(rf_imp$MeanDecreaseGini, decreasing = TRUE), ]
 write.csv(rf_imp, file.path(out_dir, "random_forest_importance.csv"), row.names = FALSE)
 
+
+# -----------------------------
+# SVM-RFE (caret::rfe with svmRadial)
+# -----------------------------
+ctrl <- rfeControl(functions = caretFuncs, method = "repeatedcv", number = 5, repeats = 3)
+set.seed(123)
+svm_rfe <- rfe(
+  x = x,
+  y = y,
+  sizes = svm_sizes,
+  rfeControl = ctrl,
+  method = "svmRadial",
+  trControl = trainControl(method = "cv", number = 5)
+)
+svm_genes <- predictors(svm_rfe)
+writeLines(svm_genes, file.path(out_dir, "svm_rfe_genes.txt"))
+
 # -----------------------------
 # ROC for LASSO genes
 # -----------------------------
@@ -59,5 +87,5 @@ write.csv(roc_summary, file.path(out_dir, "lasso_gene_auc.csv"), row.names = FAL
 # Consensus candidates
 # -----------------------------
 top_rf <- head(rf_imp$gene, 30)
-consensus <- intersect(lasso_genes, top_rf)
+consensus <- Reduce(intersect, list(lasso_genes, top_rf, svm_genes))
 writeLines(consensus, file.path(out_dir, "consensus_biomarkers.txt"))

@@ -29,7 +29,7 @@ The assistant should generate:
 
 ## Example project title
 
-Integrated Bioinformatics and Machine-Learning Analysis Identifies Immune- and Mitochondria-Related Biomarkers in Diabetic Sarcopenia.
+Integrated Bioinformatics and Machine-Learning Analysis Identifies Immune- and Mitochondrial-Related Biomarkers in Diabetic Sarcopenia.
 
 ## Example hypothesis
 

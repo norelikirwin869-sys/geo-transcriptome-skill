@@ -32,7 +32,7 @@ analysis:
     methods:
       - ssGSEA
       - xCell
-      - MCP_counter
+      - MCP-counter
 
 outputs:
   figures:
